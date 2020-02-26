@@ -1,0 +1,109 @@
+<script>
+  function sendText(e) {
+    e.preventDefault();
+    
+    function myHandler(response){
+      console.log(response);
+      
+      var m1_acc = response[0].toFixed(2);
+      var m2_acc = response[1].toFixed(2);
+      var m3_acc = response[2].toFixed(2);
+      var m4_acc = response[3].toFixed(2);
+      var m5_acc = response[4].toFixed(2);
+      var m6_acc       = response[5].toFixed(2);
+      var ev           = response[6].toFixed(2);
+      var es_int       = response[7];
+      // ************ Earned Value = 100%
+      if(response[8] != ''){  
+        var es_frac      = response[8].toFixed(2);
+      }else{
+        var es_frac      = response[8];    
+      }  
+      // Earned Value = 100% ************ 
+      var e_schedule   = response[9].toFixed(2);
+      var month        = response[10];
+      var sch_variance = response[11].toFixed(2);
+      var status       = response[12];
+      var work         = response[13];
+      // ************ Earned Value = 100%
+      if(response[14] != ''){  
+        var acc_1      = response[14].toFixed(2);
+      }else{
+        var acc_1 = response[14];
+      }
+      //  Earned Value = 100%  ************
+      
+      // ************ Earned Value = 100%
+      if(response[15] !=''){  
+        var acc        = response[15].toFixed(2);
+      }else{
+        var acc        = response[15];
+      }  
+      //  Earned Value = 100%  ************
+      var spi          = response[16].toFixed(2);
+      var sv1          = response[17].toFixed(2);
+      var pv_acc       = response[18].toFixed(2);
+      var spi_perc     = response[19].toFixed(2);
+      
+      document.getElementById("acc").innerHTML = "Planned Value accumulated (PV acc)";
+      document.getElementById("m1_acc").innerHTML = "$" + m1_acc;
+      document.getElementById("m2_acc").innerHTML = "$" + m2_acc;
+      document.getElementById("m3_acc").innerHTML = "$" + m3_acc;
+      document.getElementById("m4_acc").innerHTML = "$" + m4_acc;
+      document.getElementById("m5_acc").innerHTML = "$" + m5_acc;
+      document.getElementById("m6_acc").innerHTML = "$" + m6_acc;
+                                                    
+      document.getElementById("ev1").innerHTML  = "<i>EV = Total Budget * % work done</i><br><br>EV = " + m6_acc + " * " + work + " %" + " = $" + ev;
+      document.getElementById("ev2").innerHTML  = "<i>EV = Total Budget * % work done</i><br><br>EV = " + m6_acc + " * " + work + " %" + " = $" + ev;
+      
+      document.getElementById("spi").innerHTML  = "<i>SPI = Earned Value / Planned Value</i><br><br>SPI = "     + ev + " / " + pv_acc + " = " + spi;
+      document.getElementById("sv1").innerHTML  = "<i>SV($) = Earned Value - Planned Value</i><br><br>SV($) = " + ev + " - " + pv_acc + " = <b>$</b>" + sv1 + " " + "<i><b>" + status + "</b></i>";
+      
+      if(es_int != '' | es_frac != ''){ 
+        document.getElementById("es_int").innerHTML  = "<i>Compare EV with accumulated PV (from M1 till M6). <br>When EV is smaller than PV acc, get the previous period.</i><br><br>" + ev + " < " + acc + " => M" + es_int  + " = " + es_int ;
+        document.getElementById("es_frac").innerHTML  = "<i>(EV - PV acc M" + es_int + " ) / (PV acc M" + es_int + "+1 - PV acc M" + es_int + ")</i><br><br>" + ev + " - " + acc_1 + " / " + acc + " - " + acc_1 + " => " + es_frac ;
+      }else{  // Earned Value = 100%
+        document.getElementById("es_int").innerHTML  = "<i>Not calculated</i>";
+        document.getElementById("es_frac").innerHTML = "<i>Not calculated</i>";
+      }
+      if (es_int != '' | es_frac != ''){
+        document.getElementById("e_schedule").innerHTML  = "<i>ES = integer + decimal </i><br><br>ES = "+ es_int + " + " + es_frac + " = " + e_schedule + " months.";
+        document.getElementById("es_meaning").innerHTML  = "<i>Although we are on month <b>#" + month + "</b>, <br>we have done <b>" + e_schedule + "</b> months worth of work.<br><br>Our project is: <b>" + status + "</b></i>";
+      }else{  // Earned Value = 100%
+        document.getElementById("e_schedule").innerHTML  = "<i>Earned Schedule = Total time of the project: </i>"+ "<br>Earned Schedule = " + month + " months."; 
+        document.getElementById("es_meaning").innerHTML  = "Project took " + month + " months to be completed.";
+      }
+      
+      document.getElementById("sv_t").innerHTML  = "<i>SV(t) = Earned Schedule - actual time</i><br><br>SV(t) = " + e_schedule + " - " + month + " = " + sch_variance + " months " + "<i><b>" + status + "</b></i>";
+      
+      document.getElementById("spi_meaning").innerHTML  = "<i>We are progressing at " + spi_perc + " % of the rate originally planned.<br><br>Our project is: <b>" + status + "</b></i>";
+      
+      document.getElementById("proj_delayed").innerHTML  = "* Now, let's say your project has been halted for 4 months.<br>Go back and check what happens to <b>SPI</b>, <b>Earned Schedule</b> and <b>SV</b> when the project is delayed."
+      
+      
+    }//close myHandler
+    
+    function onFailure(error){
+      console.log(error);
+      alert(error);
+    } 
+        
+    var data = {
+      m1: e.target['month1'].value,
+      m2: e.target['month2'].value,
+      m3: e.target['month3'].value,
+      m4: e.target['month4'].value,
+      m5: e.target['month5'].value,
+      m6: e.target['month6'].value,
+      work:  e.target['work'].value,
+      month: e.target['month'].value
+    }
+    
+    google.script.run
+     .withSuccessHandler(myHandler)
+     .withFailureHandler(onFailure)
+     .calcEarnedSchedule(data);
+
+}// close sendText => from index.html
+      
+</script>
