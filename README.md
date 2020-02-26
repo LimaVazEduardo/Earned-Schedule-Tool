@@ -13,3 +13,11 @@ Check out this tool to learn more:
 https://goo.gl/Lh9wve
 
 PS. Thanks to Prof. Armando Terribili Filho and Impariamo Consulting
+
+
+Author: lima.vaz.eduardo@gmail.com
+
+More about me: https://www.linkedin.com/in/eduardo1lima/
+
+Original post: https://www.linkedin.com/pulse/earned-schedule-eduardo-lima-mba-csm-pmp-/
+
