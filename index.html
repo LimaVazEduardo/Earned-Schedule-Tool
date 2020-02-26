@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <?!= include('css'); ?>
+  </head>
+  <body>
+    <h1>Earned Schedule Tool</h1>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/JLwpXXx4bF8" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      
+    <br>
+    <ul style="list-style-type:circle"><b>Initial consideration</b>
+      <li>Traditionally SPI does not consider the critical path.</li>
+      <li>A bigger problem is when project slips in time and SPI does not provide a clear picture of the real status of the project.</li>
+      <li>Earned Schedule show effectively how much of the project has been done.</li>
+    </ul>
+    
+    <br>
+    
+    <ul style="list-style-type:circle"><b>Here is a tool to help you understand how to calculate Earned Schedule:</b>
+      <li>Let's say your project is planned to be completed in 6 months.</li>
+      <li>First, input the amount of money planned for each month (effort, it means, cost).</li>
+      <li>Then, input which month of develpment your project is at.</li>
+      <li>Finaly, input how much of work your project has accomplished.</li>
+      <li>Click Submit and see the results below.</li>
+    </ul>
+    
+    <br>
+    
+     <form onsubmit = "sendText(event)">
+      <fieldset style="width:800px">
+      <legend>Input project data:</legend>
+      
+      <table id="result" >
+        <tr>
+          <th>Planned Value $</th>
+          <th>M1</th>
+          <th>M2</th>
+          <th>M3</th>
+          <th>M4</th>
+          <th>M5</th>
+          <th>M6</th>
+        </tr>
+        <tr>
+          <td>Planned Value $:</td>
+          <td><input type="number" name="month1"  value="100"></td>
+          <td><input type="number" name="month2"  value="100"></td>
+          <td><input type="number" name="month3"  value="100"></td>
+          <td><input type="number" name="month4"  value="150"></td>
+          <td><input type="number" name="month5"  value="150"></td>
+          <td><input type="number" name="month6"  value="200"></td>
+        </tr>
+        <tr>
+          <td><div id="acc"></div></td>
+          <td><div id="m1_acc"></div></td>
+          <td><div id="m2_acc"></div></td>
+          <td><div id="m3_acc"></div></td>
+          <td><div id="m4_acc"></div></td>
+          <td><div id="m5_acc"></div></td>
+          <td><div id="m6_acc"></div></td>
+        </tr>
+      </table>
+      <br>
+      <table>
+        <tr>
+          <td>Which month are you on?</td>
+          <td><input type="number" name="month" min="1" max="" value="2"></td>
+        </tr>
+        <tr>
+          <td>How much of work has been accomplished?</td>
+          <td><input type="number" name="work" min="1" max="100" value="10">%</td>
+        </tr>
+        <tr>
+          <td><br><input type="submit" value="Submit"></td>
+        </tr>
+      </table>
+      
+      </fieldset>
+    </form>
+    
+    <br>
+    <br>
+    
+    <table id="result" width="90%">
+      <tr>
+        <th>Related to currency ($)</th>
+        <th>Related to time (t)</th>
+      </tr>
+      <tr>
+        <td>
+          <dl>
+            <dt>1. Calculate <b>Earned Value, EV</b>:</dt>
+            <dd><div id="ev1"></div></dd>
+          </dl>
+        </td>
+        <td>
+          <dl>
+            <dt>1. Calculate <b>Earned Value, EV</b>:</dt>
+            <dd><div id="ev2"></div></dd>
+          </dl>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <dl>
+            <dt>2. Calculate <b>Schedule Performance Indicator, SPI</b>:</dt>
+            <dd><div id="spi"></div><dd>
+          </dl>
+        </td>
+        <td>
+          <dl>
+            <dt>2. Calculate <b>Earned Schedule: Interger part</b>:</dt>
+            <dd><div id="es_int"></div></dd>
+          </dl>
+        </td>
+      </tr>
+      <tr>
+        <td></td>      
+        <td>
+          <dl>
+            <dt>2.1. Calculate <b>Earned Schedule: Decimal part</b>:</dt>
+            <dd><div id="es_frac"></div><dd>
+          </dl>
+        </td>
+      </tr>
+      <tr>
+        <td></td>      
+        <td>
+          <dl>
+            <dt>2.2. <b>Earned Schedule</b>:</dt>
+            <dd><div id="e_schedule"></div></dd>
+          </dl>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <dl>
+            <dt><b>SPI Meaning</b>:</dt>
+            <dd><div id="spi_meaning"></div></dd>
+          </dl>
+        </td>
+        <td>
+          <dl>
+            <dt><b>Earned Schedule Meaning</b>:</dt>
+            <dd><div id="es_meaning"></div></dd>
+          </dl>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <dl>
+            <dt>3. Calculate <b>Schedule Variance, SV($)</b>:</dt>
+            <dd><div id="sv1"></div></dd>
+          </dl>
+        </td>
+        <td>
+          <dl>
+            <dt>3. Calculate <b>Schedule Variance, SV(t)</b>:</dt>
+            <dd><div id="sv_t"></div></dd>
+          </dl>
+        </td>
+      </tr>
+    </table>
+    <br>
+    <br>
+    <div id="proj_delayed"></div> 
+    <br>
+    <br>
+    <img src="https://goo.gl/Lh9wve.qr">
+    <br>
+    <hr>
+    <br>
+    <dl>
+      <dt><b>Credits</b></dt>
+      <dd>Prof. Armando Terribili Filho</dd>
+      <dd>
+        <img src="http://www.impariamo.com.br/images/positivo-sem-slogan.png" style="width:100px;height:20px;">
+      </dd>
+      <dd>
+        <a href="http://www.impariamo.com.br/">Impariamo Consultoria</a>
+      </dd>
+      <dd><a href="https://en.wikipedia.org/wiki/Earned_schedule">Wikipedia Earned Schudule</a></dd>
+    </dl>
+    <br>
+    <br>
+    
+    <!-- Author -->
+    <br>
+    <table id="author" width="50%" border="0">
+      <tr>
+        <th colspan="2">Author</th>
+      </tr>
+      <tr>
+        <td>
+          <dl>
+            <dt></dt>
+            <dd><a href="https://www.linkedin.com/in/eduardo1lima/">Eduardo Lima, PMP®, CSM®</a></dd>
+          </dl>
+        </td>
+        <td rowspan="3">
+          <img src="https://pbs.twimg.com/media/DRbtUL6X4AEGLcV.jpg" alt="Mel Bisteka" style="width:160px;height:128px;">
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <dl>
+            <dt></dt>
+            <dd>Engineer, programmer, teacher and biker</dd>
+          </dl>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <dl>
+            <dt></dt>
+            <dd>Any comments, feel free to drop me a line: <br><b>lima.vaz.eduardo@gmail.com</b></dd>
+          </dl>
+        </td>
+      </tr>
+    </table>
+    <br>
+    <br>
+    
+    <?!= include('script'); ?>
+  </body>
+</html>
+
+
